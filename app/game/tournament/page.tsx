@@ -29,8 +29,8 @@ export default async function TournamentPage() {
           </h1>
         </div>
 
-        <CreateTournamentForm format="elimination" basePath="/game/tournament" label="Create Cup" />
-
+        <CreateTournamentForm format="knockout" basePath="/game/tournament" label="Create Cup" />
+       
         {tournaments.length === 0 ? (
           <p className="text-sm font-semibold text-ink-muted">
             No cups yet — create one above and generate a knockout bracket.

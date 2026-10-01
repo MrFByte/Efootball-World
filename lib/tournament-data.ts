@@ -1,6 +1,7 @@
 import { createClient } from "./supabase/server";
 import type { TournamentProgress } from "./selectors";
-import type { Match, TournamentFormat, TournamentTeam } from "./types";
+import type { MatchSummary } from "@/api";
+import type { TournamentFormat, TournamentTeam } from "./types";
 
 // Shared by app/game/league/lib.ts and app/game/tournament/lib.ts — same
 // underlying `tournaments` table, filtered by format. Returns the same
@@ -39,19 +40,23 @@ export async function getMyTournaments(
 export interface TournamentDetailData {
   id: string;
   name: string;
-  size: 8 | 16 | 32;
+  size: number;
   format: TournamentFormat;
+  legs: 1 | 2;
+  groupSize: number | null;
+  advancePerGroup: number | null;
   status: string;
   ownerId: string;
+  winnerTeamId: string | null;
   teams: Pick<TournamentTeam, "id" | "name" | "added_by_user_id">[];
-  matches: Pick<Match, "id" | "round" | "team_a_id" | "team_b_id" | "score_a" | "score_b" | "status">[];
+  matches: MatchSummary[];
 }
 
 export async function getTournamentDetail(id: string): Promise<TournamentDetailData | null> {
   const supabase = await createClient();
   const { data: tournament } = await supabase
     .from("tournaments")
-    .select("id, name, size, format, status, owner_id")
+    .select("id, name, size, format, legs, group_size, advance_per_group, status, owner_id, winner_team_id")
     .eq("id", id)
     .maybeSingle();
   if (!tournament) return null;
@@ -60,9 +65,12 @@ export async function getTournamentDetail(id: string): Promise<TournamentDetailD
     supabase.from("tournament_teams").select("id, name, added_by_user_id").eq("tournament_id", id),
     supabase
       .from("matches")
-      .select("id, round, team_a_id, team_b_id, score_a, score_b, status")
+      .select("id, stage, group_no, round, slot, leg, team_a_id, team_b_id, score_a, score_b, status, winner_team_id")
       .eq("tournament_id", id)
-      .order("round", { ascending: true }),
+      .order("stage", { ascending: true })
+      .order("round", { ascending: true })
+      .order("slot", { ascending: true })
+      .order("leg", { ascending: true }),
   ]);
 
   return {
@@ -70,8 +78,12 @@ export async function getTournamentDetail(id: string): Promise<TournamentDetailD
     name: tournament.name,
     size: tournament.size,
     format: tournament.format,
+    legs: tournament.legs,
+    groupSize: tournament.group_size,
+    advancePerGroup: tournament.advance_per_group,
     status: tournament.status,
     ownerId: tournament.owner_id,
+    winnerTeamId: tournament.winner_team_id,
     teams: teams ?? [],
     matches: matches ?? [],
   };
@@ -81,7 +93,7 @@ export interface JoinableTournament {
   id: string;
   name: string;
   format: TournamentFormat;
-  size: 8 | 16 | 32;
+  size: number;
   teamCount: number;
   ownerName: string;
 }

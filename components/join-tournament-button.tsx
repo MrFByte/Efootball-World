@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { apiClient, ApiError } from "@/api";
 import { getAccessToken } from "@/lib/supabase/client";
+import { TEAM_NAME_MAX_LENGTH } from "@/lib/tournament-rules";
 
 export function JoinTournamentButton({
   tournamentId,
@@ -56,7 +57,7 @@ export function JoinTournamentButton({
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Your team name"
-        maxLength={40}
+        maxLength={TEAM_NAME_MAX_LENGTH}
         className="h-8 w-36 rounded-full border-2 border-border bg-bg px-3 text-xs font-bold text-ink outline-none focus:ring-2 focus:ring-lime"
       />
       <button

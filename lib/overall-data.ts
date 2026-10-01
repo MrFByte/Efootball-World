@@ -65,6 +65,7 @@ export interface RecentH2HEntry {
   scoreFor: number;
   scoreAgainst: number;
   playedAt: string;
+  posterUrl: string | null;
 }
 
 // Recent matches across every friend, not just one (contrast with
@@ -74,7 +75,7 @@ export async function getRecentH2H(myId: string, limit = 5): Promise<RecentH2HEn
   const supabase = await createClient();
   const { data: rows } = await supabase
     .from("h2h_matches")
-    .select("id, user_a_id, user_b_id, score_a, score_b, played_at")
+    .select("id, user_a_id, user_b_id, score_a, score_b, played_at, poster_url")
     .or(`user_a_id.eq.${myId},user_b_id.eq.${myId}`)
     .order("played_at", { ascending: false })
     .limit(limit);
@@ -94,6 +95,7 @@ export async function getRecentH2H(myId: string, limit = 5): Promise<RecentH2HEn
       scoreFor: iAmA ? r.score_a : r.score_b,
       scoreAgainst: iAmA ? r.score_b : r.score_a,
       playedAt: r.played_at,
+      posterUrl: r.poster_url,
     };
   });
 }
@@ -110,5 +112,6 @@ export function toH2HResults(entries: RecentH2HEntry[]): H2HResult[] {
     scoreAgainst: m.scoreAgainst,
     result: m.scoreFor === m.scoreAgainst ? "D" : m.scoreFor > m.scoreAgainst ? "W" : "L",
     playedAt: m.playedAt,
+    posterUrl: m.posterUrl,
   }));
 }

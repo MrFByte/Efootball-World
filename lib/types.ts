@@ -1,6 +1,10 @@
-export type TournamentFormat = "elimination" | "round_robin";
+// league: one table, most points wins (max 30 teams)
+// knockout: random draw, seeded bracket with byes (max 64 teams)
+// combined: group stage (mini leagues) then a knockout of the qualifiers
+export type TournamentFormat = "league" | "knockout" | "combined";
 export type TournamentStatus = "draft" | "active" | "completed";
-export type MatchStatus = "pending" | "played";
+export type MatchStatus = "pending" | "played" | "bye";
+export type MatchStage = "league" | "group" | "knockout";
 export type FriendshipStatus = "pending" | "accepted";
 export type MatchResult = "W" | "L" | "D";
 
@@ -22,9 +26,13 @@ export interface Tournament {
   id: string;
   owner_id: string;
   name: string;
-  size: 8 | 16 | 32;
+  size: number;
   format: TournamentFormat;
+  legs: 1 | 2; // 2 = home & away (finals are always one match)
+  group_size: number | null; // combined only
+  advance_per_group: number | null; // combined only
   status: TournamentStatus;
+  winner_team_id: string | null;
   created_at: string;
 }
 
@@ -38,12 +46,17 @@ export interface TournamentTeam {
 export interface Match {
   id: string;
   tournament_id: string;
+  stage: MatchStage;
+  group_no: number | null;
   round: number;
-  team_a_id: string;
-  team_b_id: string;
+  slot: number;
+  leg: 1 | 2;
+  team_a_id: string | null; // null = TBD (later knockout round) or bye
+  team_b_id: string | null;
   score_a: number | null;
   score_b: number | null;
   status: MatchStatus;
+  winner_team_id: string | null;
 }
 
 export interface H2HMatch {

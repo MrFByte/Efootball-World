@@ -9,16 +9,17 @@ import { getOverallStats, getRecentH2H, toH2HResults } from "@/lib/overall-data"
 export async function getOverviewData() {
   const { profile } = await requireSession();
 
-  const [leagues, cups, stats, recentH2H] = await Promise.all([
-    getMyTournaments(profile.id, "round_robin"),
-    getMyTournaments(profile.id, "elimination"),
+  const [leagues, cups, combined, stats, recentH2H] = await Promise.all([
+    getMyTournaments(profile.id, "league"),
+    getMyTournaments(profile.id, "knockout"),
+    getMyTournaments(profile.id, "combined"),
     getOverallStats(profile.id),
     getRecentH2H(profile.id, 3),
   ]);
 
   return {
     user: profile,
-    tournaments: [...leagues, ...cups].filter((t) => t.status === "active"),
+    tournaments: [...leagues, ...cups, ...combined].filter((t) => t.status === "active"),
     h2h: stats.h2h,
     recentH2H: toH2HResults(recentH2H),
   };

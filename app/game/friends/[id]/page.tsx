@@ -19,6 +19,7 @@ export default async function FriendDetailPage({ params }: PageProps<"/game/frie
     scoreAgainst: m.score_b,
     result: m.score_a === m.score_b ? "D" : m.score_a > m.score_b ? "W" : "L",
     playedAt: m.played_at,
+    posterUrl: m.poster_url,
   }));
 
   const total = h2h.record.wins + h2h.record.losses + h2h.record.draws;

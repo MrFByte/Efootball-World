@@ -26,7 +26,7 @@ export default async function LeagueDetailPage({ params }: PageProps<"/game/leag
         <div className="flex flex-col gap-1">
           <span className="flex w-fit items-center gap-2 rounded-full border-2 border-border bg-aqua px-3 py-1 font-display text-xs font-extrabold uppercase tracking-wide text-[#14140f]">
             <ShieldIcon className="h-3.5 w-3.5" />
-            {tournament.size}-team league
+            {tournament.size}-team league{tournament.legs === 2 ? " · home & away" : ""}
           </span>
           <h1 className="font-display text-3xl font-extrabold leading-none text-ink sm:text-4xl">
             {tournament.name}
@@ -73,7 +73,11 @@ export default async function LeagueDetailPage({ params }: PageProps<"/game/leag
                     className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border-2 border-border bg-surface px-4 py-3"
                   >
                     <span className="text-sm font-bold text-ink">
-                      {teamName.get(m.team_a_id) ?? "TBD"} vs {teamName.get(m.team_b_id) ?? "TBD"}
+                      <span className="mr-2 text-[10px] font-extrabold uppercase tracking-wide text-ink-muted">
+                        R{m.round}
+                      </span>
+                      {(m.team_a_id && teamName.get(m.team_a_id)) ?? "TBD"} vs{" "}
+                      {(m.team_b_id && teamName.get(m.team_b_id)) ?? "TBD"}
                     </span>
                     {m.status === "played" ? (
                       <span className="font-display text-sm font-extrabold text-ink">

@@ -1,4 +1,5 @@
-import type { MatchResult, TournamentFormat } from "@/lib/types";
+import { FORMAT_LABEL } from "@/lib/tournament-rules";
+import type { MatchResult } from "@/lib/types";
 
 // ---- theme-provider.tsx ----------------------------------------------
 
@@ -47,10 +48,9 @@ export function getTournamentBarColor(index: number) {
   return tournamentBarColors[index % tournamentBarColors.length];
 }
 
-export const tournamentFormatLabel: Record<TournamentFormat, string> = {
-  round_robin: "League",
-  elimination: "Cup",
-};
+// Re-exported from lib/tournament-rules.ts (the single source shared
+// with the create form) so callers importing from here still get one name.
+export const tournamentFormatLabel = FORMAT_LABEL;
 
 // ---- h2h-list.tsx ---------------------------------------------------------
 

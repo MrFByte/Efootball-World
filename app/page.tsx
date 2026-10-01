@@ -7,6 +7,7 @@ import { TournamentCard } from "@/components/tournament-card";
 import { H2HList } from "@/components/h2h-list";
 import { ArrowRightIcon, BallIcon } from "@/components/icons";
 import { getAvatarInitial, getOverviewData } from "./lib";
+import { FORMAT_ROUTE } from "@/lib/tournament-rules";
 
 export default async function Home() {
   const { user, tournaments, h2h, recentH2H } = await getOverviewData();
@@ -18,9 +19,14 @@ export default async function Home() {
           <Logo />
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border bg-surface-ink font-display text-sm font-extrabold text-on-ink sm:h-11 sm:w-11">
+            <Link
+              href="/account"
+              aria-label="Edit profile"
+              title="Edit profile"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border bg-surface-ink font-display text-sm font-extrabold text-on-ink transition-transform active:scale-90 sm:h-11 sm:w-11"
+            >
               {getAvatarInitial(user.username)}
-            </span>
+            </Link>
             <SignOutButton />
           </div>
         </header>
@@ -89,7 +95,7 @@ export default async function Home() {
           ) : (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
               {tournaments.map((t, i) => (
-                <Link key={t.id} href={`/game/${t.format === "round_robin" ? "league" : "tournament"}/${t.id}`}>
+                <Link key={t.id} href={`/game/${FORMAT_ROUTE[t.format]}/${t.id}`}>
                   <TournamentCard tournament={t} index={i} />
                 </Link>
               ))}

@@ -4,12 +4,13 @@ import { getOverallStats, getRecentH2H } from "@/lib/overall-data";
 
 export async function getOverallOverview() {
   const { profile } = await requireSession();
-  const [stats, leagues, cups, recentH2H] = await Promise.all([
+  const [stats, leagues, cups, combined, recentH2H] = await Promise.all([
     getOverallStats(profile.id),
-    getMyTournaments(profile.id, "round_robin"),
-    getMyTournaments(profile.id, "elimination"),
+    getMyTournaments(profile.id, "league"),
+    getMyTournaments(profile.id, "knockout"),
+    getMyTournaments(profile.id, "combined"),
     getRecentH2H(profile.id, 5),
   ]);
 
-  return { stats, tournaments: [...leagues, ...cups], recentH2H };
+  return { stats, tournaments: [...leagues, ...cups, ...combined], recentH2H };
 }

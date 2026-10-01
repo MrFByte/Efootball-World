@@ -34,8 +34,12 @@ export const tournaments: Tournament[] = [
     owner_id: "u1",
     name: "Friends World Cup",
     size: 8,
-    format: "elimination",
+    format: "knockout",
+    legs: 1,
+    group_size: null,
+    advance_per_group: null,
     status: "active",
+    winner_team_id: null,
     created_at: "2026-08-01T12:00:00Z",
   },
   {
@@ -43,8 +47,12 @@ export const tournaments: Tournament[] = [
     owner_id: "u1",
     name: "Sunday League",
     size: 16,
-    format: "round_robin",
+    format: "league",
+    legs: 1,
+    group_size: null,
+    advance_per_group: null,
     status: "active",
+    winner_team_id: null,
     created_at: "2026-07-15T12:00:00Z",
   },
   {
@@ -52,8 +60,12 @@ export const tournaments: Tournament[] = [
     owner_id: "u1",
     name: "Champions Ladder",
     size: 8,
-    format: "round_robin",
+    format: "league",
+    legs: 1,
+    group_size: null,
+    advance_per_group: null,
     status: "active",
+    winner_team_id: null,
     created_at: "2026-08-20T12:00:00Z",
   },
 ];
@@ -69,20 +81,20 @@ export const tournamentTeams: TournamentTeam[] = [
 
 // round counts drive the progress bars on the Overview page.
 export const matches: Match[] = [
-  { id: "m1", tournament_id: "t1", round: 1, team_a_id: "tt1", team_b_id: "tt2", score_a: 3, score_b: 1, status: "played" },
-  { id: "m2", tournament_id: "t1", round: 2, team_a_id: "tt1", team_b_id: "tt2", score_a: null, score_b: null, status: "pending" },
-  { id: "m3", tournament_id: "t1", round: 3, team_a_id: "tt1", team_b_id: "tt2", score_a: null, score_b: null, status: "pending" },
+  { id: "m1", tournament_id: "t1", stage: "knockout", group_no: null, round: 1, slot: 0, leg: 1, team_a_id: "tt1", team_b_id: "tt2", score_a: 3, score_b: 1, status: "played", winner_team_id: null },
+  { id: "m2", tournament_id: "t1", stage: "knockout", group_no: null, round: 2, slot: 0, leg: 1, team_a_id: "tt1", team_b_id: "tt2", score_a: null, score_b: null, status: "pending", winner_team_id: null },
+  { id: "m3", tournament_id: "t1", stage: "knockout", group_no: null, round: 3, slot: 0, leg: 1, team_a_id: "tt1", team_b_id: "tt2", score_a: null, score_b: null, status: "pending", winner_team_id: null },
 
-  { id: "m4", tournament_id: "t2", round: 1, team_a_id: "tt3", team_b_id: "tt4", score_a: 2, score_b: 2, status: "played" },
-  { id: "m5", tournament_id: "t2", round: 1, team_a_id: "tt3", team_b_id: "tt4", score_a: 1, score_b: 0, status: "played" },
-  { id: "m6", tournament_id: "t2", round: 1, team_a_id: "tt3", team_b_id: "tt4", score_a: null, score_b: null, status: "pending" },
-  { id: "m7", tournament_id: "t2", round: 1, team_a_id: "tt3", team_b_id: "tt4", score_a: null, score_b: null, status: "pending" },
+  { id: "m4", tournament_id: "t2", stage: "league", group_no: null, round: 1, slot: 0, leg: 1, team_a_id: "tt3", team_b_id: "tt4", score_a: 2, score_b: 2, status: "played", winner_team_id: null },
+  { id: "m5", tournament_id: "t2", stage: "league", group_no: null, round: 1, slot: 0, leg: 1, team_a_id: "tt3", team_b_id: "tt4", score_a: 1, score_b: 0, status: "played", winner_team_id: null },
+  { id: "m6", tournament_id: "t2", stage: "league", group_no: null, round: 1, slot: 0, leg: 1, team_a_id: "tt3", team_b_id: "tt4", score_a: null, score_b: null, status: "pending", winner_team_id: null },
+  { id: "m7", tournament_id: "t2", stage: "league", group_no: null, round: 1, slot: 0, leg: 1, team_a_id: "tt3", team_b_id: "tt4", score_a: null, score_b: null, status: "pending", winner_team_id: null },
 
-  { id: "m8", tournament_id: "t3", round: 1, team_a_id: "tt5", team_b_id: "tt6", score_a: 4, score_b: 2, status: "played" },
-  { id: "m9", tournament_id: "t3", round: 1, team_a_id: "tt5", team_b_id: "tt6", score_a: 0, score_b: 0, status: "played" },
-  { id: "m10", tournament_id: "t3", round: 1, team_a_id: "tt5", team_b_id: "tt6", score_a: 2, score_b: 1, status: "played" },
-  { id: "m11", tournament_id: "t3", round: 1, team_a_id: "tt5", team_b_id: "tt6", score_a: null, score_b: null, status: "pending" },
-  { id: "m12", tournament_id: "t3", round: 1, team_a_id: "tt5", team_b_id: "tt6", score_a: null, score_b: null, status: "pending" },
+  { id: "m8", tournament_id: "t3", stage: "league", group_no: null, round: 1, slot: 0, leg: 1, team_a_id: "tt5", team_b_id: "tt6", score_a: 4, score_b: 2, status: "played", winner_team_id: null },
+  { id: "m9", tournament_id: "t3", stage: "league", group_no: null, round: 1, slot: 0, leg: 1, team_a_id: "tt5", team_b_id: "tt6", score_a: 0, score_b: 0, status: "played", winner_team_id: null },
+  { id: "m10", tournament_id: "t3", stage: "league", group_no: null, round: 1, slot: 0, leg: 1, team_a_id: "tt5", team_b_id: "tt6", score_a: 2, score_b: 1, status: "played", winner_team_id: null },
+  { id: "m11", tournament_id: "t3", stage: "league", group_no: null, round: 1, slot: 0, leg: 1, team_a_id: "tt5", team_b_id: "tt6", score_a: null, score_b: null, status: "pending", winner_team_id: null },
+  { id: "m12", tournament_id: "t3", stage: "league", group_no: null, round: 1, slot: 0, leg: 1, team_a_id: "tt5", team_b_id: "tt6", score_a: null, score_b: null, status: "pending", winner_team_id: null },
 ];
 
 export const h2hMatches: H2HMatch[] = [

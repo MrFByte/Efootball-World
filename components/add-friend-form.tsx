@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { apiClient, ApiError } from "@/api";
 import { getAccessToken } from "@/lib/supabase/client";
+import { USERNAME_MAX_LENGTH } from "@/lib/profile-rules";
 
 export function AddFriendForm() {
   const router = useRouter();
@@ -39,7 +40,7 @@ export function AddFriendForm() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Friend's username"
-          maxLength={20}
+          maxLength={USERNAME_MAX_LENGTH}
           className="min-w-0 flex-1 rounded-2xl border-2 border-border bg-surface px-4 py-2.5 font-semibold text-ink placeholder:text-ink-muted outline-none focus:ring-2 focus:ring-lime"
         />
         <button

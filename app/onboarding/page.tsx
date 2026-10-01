@@ -6,6 +6,12 @@ import { Logo } from "@/components/logo";
 import { BallIcon } from "@/components/icons";
 import { createClient } from "@/lib/supabase/client";
 import { apiClient, ApiError } from "@/api";
+import {
+  GAMER_ID_MAX_LENGTH,
+  USERNAME_HELP,
+  USERNAME_MAX_LENGTH,
+  isValidUsername,
+} from "@/lib/profile-rules";
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -20,8 +26,8 @@ export default function OnboardingPage() {
     setError(null);
 
     const trimmedUsername = username.trim();
-    if (!/^[a-zA-Z0-9_]{3,20}$/.test(trimmedUsername)) {
-      setError("Username must be 3-20 characters: letters, numbers, underscore.");
+    if (!isValidUsername(trimmedUsername)) {
+      setError(USERNAME_HELP);
       return;
     }
 
@@ -93,7 +99,7 @@ export default function OnboardingPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="leo10"
-                maxLength={20}
+                maxLength={USERNAME_MAX_LENGTH}
                 autoComplete="off"
                 className="rounded-2xl border-2 border-border bg-surface px-4 py-3 font-semibold text-ink placeholder:text-ink-muted outline-none focus:ring-2 focus:ring-lime"
               />
@@ -108,7 +114,7 @@ export default function OnboardingPage() {
                 value={gamerId}
                 onChange={(e) => setGamerId(e.target.value)}
                 placeholder="1234-5678-90"
-                maxLength={40}
+                maxLength={GAMER_ID_MAX_LENGTH}
                 autoComplete="off"
                 className="rounded-2xl border-2 border-border bg-surface px-4 py-3 font-semibold text-ink placeholder:text-ink-muted outline-none focus:ring-2 focus:ring-lime"
               />

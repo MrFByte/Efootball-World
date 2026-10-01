@@ -1,5 +1,6 @@
 import type { H2HResult } from "@/lib/selectors";
 import { getH2HAvatarColor, getInitials, h2hResultClasses } from "./lib";
+import { PosterShareButton } from "./poster-share-button";
 
 export function H2HList({ results }: { results: H2HResult[] }) {
   return (
@@ -25,6 +26,7 @@ export function H2HList({ results }: { results: H2HResult[] }) {
           >
             {r.result}
           </span>
+          <PosterShareButton matchId={r.id} initialPosterUrl={r.posterUrl} />
         </li>
       ))}
     </ul>
