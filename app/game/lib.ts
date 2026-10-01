@@ -1,4 +1,4 @@
-import { ChartIcon, ShieldIcon, TrophyIcon, UsersIcon } from "@/components/icons";
+import { ChartIcon, LayersIcon, ShieldIcon, TrophyIcon, UsersIcon } from "@/components/icons";
 import type { GameCardColor } from "@/components/lib";
 import type { IconProps } from "@/components/icons";
 import type { ComponentType } from "react";
@@ -19,9 +19,10 @@ export interface GameHubCard {
 // real data, not just static navigation copy.
 export async function getGameHubCards(): Promise<GameHubCard[]> {
   const { profile } = await requireSession();
-  const [leagues, cups, friendships] = await Promise.all([
-    getMyTournaments(profile.id, "round_robin"),
-    getMyTournaments(profile.id, "elimination"),
+  const [leagues, cups, combined, friendships] = await Promise.all([
+    getMyTournaments(profile.id, "league"),
+    getMyTournaments(profile.id, "knockout"),
+    getMyTournaments(profile.id, "combined"),
     getMyFriendships(profile.id),
   ]);
   const friendsCount = friendships.filter((f) => f.status === "accepted").length;
@@ -38,10 +39,18 @@ export async function getGameHubCards(): Promise<GameHubCard[]> {
     {
       href: "/game/tournament",
       title: "Tournament",
-      description: "Knockout cups up to 32 teams",
+      description: "Knockout cups up to 64 teams",
       color: "futsol",
       icon: TrophyIcon,
       count: cups.length,
+    },
+    {
+      href: "/game/combined",
+      title: "Groups + Cup",
+      description: "Group stage into a knockout",
+      color: "icterine",
+      icon: LayersIcon,
+      count: combined.length,
     },
     {
       href: "/game/friends",

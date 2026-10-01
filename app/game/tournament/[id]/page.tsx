@@ -24,7 +24,7 @@ export default async function TournamentDetailPage({ params }: PageProps<"/game/
         <div className="flex flex-col gap-1">
           <span className="flex w-fit items-center gap-2 rounded-full border-2 border-border bg-futsol px-3 py-1 font-display text-xs font-extrabold uppercase tracking-wide text-[#14140f]">
             <TrophyIcon className="h-3.5 w-3.5" />
-            {tournament.size}-team cup
+            {tournament.size}-team cup{tournament.legs === 2 ? " · two-leg ties" : ""}
           </span>
           <h1 className="font-display text-3xl font-extrabold leading-none text-ink sm:text-4xl">
             {tournament.name}

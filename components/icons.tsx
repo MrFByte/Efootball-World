@@ -68,6 +68,19 @@ export function UsersIcon(props: IconProps) {
   );
 }
 
+// Two stacked rounded squares (groups) feeding a single ring (a knockout
+// bracket slot) — used for the combined (groups -> knockout) format.
+export function LayersIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="3" y="4" width="8" height="8" rx="2" />
+      <rect x="3" y="14.5" width="8" height="6.5" rx="2" />
+      <circle cx="17.5" cy="11.5" r="4.3" />
+      <path d="M11.3 8 15 10.3M11.3 15 15 12.8" />
+    </svg>
+  );
+}
+
 export function ChartIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
@@ -113,6 +126,26 @@ export function GoogleIcon(props: IconProps) {
         d="M12 5.36c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.96 1 12 1a11 11 0 0 0-9.84 6.04l3.67 2.85C6.7 7.3 9.13 5.36 12 5.36Z"
         fill="#EA4335"
       />
+    </svg>
+  );
+}
+
+export function PencilIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 20 4.8 16.2 15.6 5.4a1.6 1.6 0 0 1 2.3 0l0.7 0.7a1.6 1.6 0 0 1 0 2.3L7.8 19.2 4 20Z" />
+      <path d="M13.8 7.2 16.8 10.2" />
+    </svg>
+  );
+}
+
+export function ShareIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="18" cy="5.5" r="2.5" />
+      <circle cx="6" cy="12" r="2.5" />
+      <circle cx="18" cy="18.5" r="2.5" />
+      <path d="M8.2 10.8 15.8 6.7M8.2 13.2l7.6 4.1" />
     </svg>
   );
 }

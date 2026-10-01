@@ -5,6 +5,7 @@ import { TournamentCard } from "@/components/tournament-card";
 import { H2HList } from "@/components/h2h-list";
 import { toH2HResults } from "@/lib/overall-data";
 import { getOverallOverview } from "./lib";
+import { FORMAT_ROUTE } from "@/lib/tournament-rules";
 
 export default async function OverallPage() {
   const { stats, tournaments, recentH2H } = await getOverallOverview();
@@ -58,7 +59,7 @@ export default async function OverallPage() {
           ) : (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {tournaments.map((t, i) => (
-                <Link key={t.id} href={`/game/${t.format === "round_robin" ? "league" : "tournament"}/${t.id}`}>
+                <Link key={t.id} href={`/game/${FORMAT_ROUTE[t.format]}/${t.id}`}>
                   <TournamentCard tournament={t} index={i} />
                 </Link>
               ))}

@@ -62,6 +62,7 @@ export interface H2HResult {
   scoreAgainst: number;
   result: MatchResult;
   playedAt: string;
+  posterUrl: string | null;
 }
 
 function toH2HResult(match: (typeof h2hMatches)[number]): H2HResult {
@@ -80,6 +81,7 @@ function toH2HResult(match: (typeof h2hMatches)[number]): H2HResult {
     scoreAgainst,
     result,
     playedAt: match.played_at,
+    posterUrl: match.poster_url,
   };
 }
 

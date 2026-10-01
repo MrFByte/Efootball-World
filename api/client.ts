@@ -40,28 +40,72 @@ async function request<T>(url: string, { accessToken, headers, ...init }: Reques
   return body as T;
 }
 
+export type MatchSummary = Pick<
+  Match,
+  | "id"
+  | "stage"
+  | "group_no"
+  | "round"
+  | "slot"
+  | "leg"
+  | "team_a_id"
+  | "team_b_id"
+  | "score_a"
+  | "score_b"
+  | "status"
+  | "winner_team_id"
+>;
+
 export interface TournamentDetail extends Tournament {
   teams: Pick<TournamentTeam, "id" | "name">[];
-  matches: Pick<Match, "id" | "round" | "team_a_id" | "team_b_id" | "score_a" | "score_b" | "status">[];
+  matches: MatchSummary[];
 }
 
 export interface StandingsRow {
   team_id: string;
   name: string;
+  group_no: number | null; // set for combined tournaments
   played: number;
-  points: number;
+  won: number;
+  drawn: number;
+  lost: number;
+  goals_for: number;
+  goals_against: number;
   goal_diff: number;
+  points: number;
 }
 
 export interface H2HResponse {
   record: { wins: number; losses: number; draws: number };
-  matches: Pick<H2HMatch, "id" | "score_a" | "score_b" | "played_at">[];
+  matches: Pick<H2HMatch, "id" | "score_a" | "score_b" | "played_at" | "poster_url">[];
 }
 
 // One method per backend/README.md endpoint, each just wiring `api.*` +
 // `request` together — this is what the rest of the frontend should import
 // once a Supabase project is deployed and NEXT_PUBLIC_SUPABASE_FUNCTIONS_URL
 // is set (see api/endpoints.ts's isBackendConfigured).
+// See backend/_shared/tournament-input.js for limits and defaults.
+export interface CreateTournamentInput {
+  name: string;
+  format: TournamentFormat;
+  size: number;
+  legs?: 1 | 2;
+  group_size?: number;
+  advance_per_group?: number;
+}
+
+export interface MatchResultInput {
+  score_a: number;
+  score_b: number;
+  // Required when a knockout tie ends level: the penalty shoot-out winner.
+  winner_team_id?: string;
+}
+
+export interface MatchResultResponse extends Pick<Match, "id" | "status" | "score_a" | "score_b" | "winner_team_id"> {
+  tournament_status: "active" | "completed";
+  champion_team_id?: string | null;
+}
+
 export interface ProfileInput {
   username?: string;
   gamer_id?: string | null;
@@ -100,10 +144,7 @@ export const apiClient = {
       accessToken,
     }),
 
-  createTournament: (
-    payload: { name: string; size: 8 | 16 | 32; format: TournamentFormat },
-    accessToken?: string,
-  ) =>
+  createTournament: (payload: CreateTournamentInput, accessToken?: string) =>
     request<Tournament>(api.tournaments.create(), {
       method: "POST",
       body: JSON.stringify(payload),
@@ -129,8 +170,8 @@ export const apiClient = {
   getStandings: (tournamentId: string, accessToken?: string) =>
     request<StandingsRow[]>(api.tournaments.standings(tournamentId), { accessToken }),
 
-  updateMatch: (matchId: string, score: { score_a: number; score_b: number }, accessToken?: string) =>
-    request<Pick<Match, "id" | "status" | "score_a" | "score_b">>(api.matches.update(matchId), {
+  updateMatch: (matchId: string, score: MatchResultInput, accessToken?: string) =>
+    request<MatchResultResponse>(api.matches.update(matchId), {
       method: "PATCH",
       body: JSON.stringify(score),
       accessToken,

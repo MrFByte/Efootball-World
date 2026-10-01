@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { apiClient, ApiError } from "@/api";
 import { getAccessToken } from "@/lib/supabase/client";
+import { TEAM_NAME_MAX_LENGTH } from "@/lib/tournament-rules";
 
 export function AddTeamForm({ tournamentId }: { tournamentId: string }) {
   const router = useRouter();
@@ -36,7 +37,7 @@ export function AddTeamForm({ tournamentId }: { tournamentId: string }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Team or player name"
-          maxLength={40}
+          maxLength={TEAM_NAME_MAX_LENGTH}
           className="min-w-0 flex-1 rounded-2xl border-2 border-border bg-surface px-4 py-2.5 font-semibold text-ink placeholder:text-ink-muted outline-none focus:ring-2 focus:ring-lime"
         />
         <button
